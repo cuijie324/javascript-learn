@@ -40,3 +40,12 @@ function hasRegExpU () {
 }
 
 console.log(hasRegExpU());//true
+
+let str = 'Hello World!';
+console.log(str.repeat(4));
+
+console.log(str.startsWith('H'));//true
+console.log(str.endsWith('!'));//true
+console.log(str.includes('W'));//true
+
+console.log(str.endsWith('o', 8));//true
