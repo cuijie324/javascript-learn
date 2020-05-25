@@ -87,5 +87,113 @@
     }
 
     let descriptor = Object.getOwnPropertyDescriptor(CustomHTMLElement.prototype, 'html');
-    console.log(descriptor);
+    console.log('访问器属性', descriptor);
+
+    let customHTMLElement = new CustomHTMLElement({ innerHtml: 'test' });
+    console.log(customHTMLElement.html);
+}
+
+//访问器属性的等价表示
+{
+    let CustomHTMLElement = (function () {
+        'use strict';
+
+        const CustomHTMLElement = function (element) {
+            if (typeof new.target === "undefined") {
+                throw new Error('只能通过new调用');
+            }
+            this.element = element;
+        }
+
+        //定义存储器属性
+        Object.defineProperty(CustomHTMLElement.prototype, 'html', {//定义在原型上
+            enumerable: false,
+            configurable: true,
+            get: function () {
+                return this.element.innerHtml;
+            },
+            set: function (value) {
+                this.element.innerHtml = value;
+            }
+        });
+
+        return CustomHTMLElement;
+    })();
+
+    let customHTMLElement = new CustomHTMLElement({ innerHtml: 'test' });
+    console.log('模拟访问器属性', customHTMLElement.html);
+    console.log(Object.getOwnPropertyDescriptor(CustomHTMLElement.prototype, 'html'));
+}
+
+//需计算属性名
+{
+    let methodName = 'sayName';
+    let propertyName = 'html';
+    class PersonClass {
+        constructor(name) {
+            this.name = name;
+        }
+
+        [methodName] () {
+            console.log(this.name);
+        }
+
+        get [propertyName] () {
+            return this.innerHtml;
+        }
+
+        set [propertyName] (value) {
+            this.innerHtml = value;
+        }
+    }
+
+    let person = new PersonClass('cc');
+    person.sayName();
+    console.log(person.html);
+    person.html = 'html';
+    console.log(person.html);
+}
+
+//生成器方法
+{
+    class MyClass {
+        *createIterator () {
+            yield 1;
+            yield 3;
+            yield 5;
+        }
+    }
+
+    let myClass = new MyClass();
+    let iterator = myClass.createIterator();
+    console.log(iterator);
+    console.log(iterator.next());
+
+    for (let item of iterator) {
+        console.log(item);
+    }
+}
+
+//有默认迭代器的自定义类
+{
+    class Collection {
+        constructor() {
+            this.items = [];
+        }
+
+        //是个生成器方法
+        *[Symbol.iterator] () {
+            yield* this.items.values();
+        }
+    }
+
+    console.log('>>>有默认迭代器的自定义类');
+    let collection = new Collection();
+    collection.items.push(1);
+    collection.items.push(3);
+    collection.items.push(7);
+
+    for (let value of collection) {
+        console.log(value);
+    }
 }
