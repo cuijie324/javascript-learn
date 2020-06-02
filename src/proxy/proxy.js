@@ -31,8 +31,29 @@
     target.name = 'cccc';
     proxy.name = 'jjjjj';
 
-    // proxy.value = 123;
-    proxy.value = 'sss';
+    proxy.value = 123;
+    // proxy.value = 'sss';
 
     console.log(target);
 }
+
+{
+    //使用get陷阱函数进行对象外形验证
+    let proxy = new Proxy({}, {
+        get (trapTarget, key, receiver) {
+            if (!(key in receiver)) {
+                throw new Error(`${key} not in target`);
+            }
+
+            return Reflect.get(trapTarget, key, receiver);
+        }
+    });
+
+    proxy.proxy = 'cc';
+    console.log(proxy.proxy);
+
+    console.log(proxy.name);//Error: name not in target
+}
+
+Object.setPrototypeOf 
+Object.getPrototypeOf
