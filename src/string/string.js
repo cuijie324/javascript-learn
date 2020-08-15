@@ -1,6 +1,6 @@
 let txt = "𠮷";//这是个辅助平面字符
 console.log(txt.length);//2
-console.log(txt.charAt(0));
+console.log(txt.charAt(0));//打印出来乱码
 
 console.log(txt.charCodeAt(0));//55362
 console.log(txt.charCodeAt(1));//57271
