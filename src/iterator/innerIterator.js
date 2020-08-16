@@ -19,3 +19,11 @@
         console.log(key, value);
     }
 }
+
+{
+    //字符串迭代器，字符串可以使用for...of
+    let str = 'A B';
+    for (let i = 0; i < str.length; i++) {
+        console.log(str[i]);
+    }
+}
