@@ -54,6 +54,3 @@
 
     console.log(proxy.name);//Error: name not in target
 }
-
-Object.setPrototypeOf 
-Object.getPrototypeOf
